@@ -1,0 +1,52 @@
+---
+fileTypes:
+- liquid
+foldingStartMarker: "(?x)\n        (\\{%\\s*(if|else|elseif|ef|elsef|case|comment|capture|for)\\s*.*?\\s*%\\}\n\t\t|<(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl)\\b.*?>\n\t\t|<!--(?!.*-->)\n\t\t|\\{\\s*($|\\?>\\s*$|//|/\\*(.*\\*/\\s*$|(?!.*?\\*/)))\n\t\t)"
+foldingStopMarker: "(?x)\n        (\\{%\\s*end(if|ef|case|comment|capture|for)\\s*%\\}\n\t\t|</(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl)>\n\t\t|^\\s*-->\n\t\t|(^|\\s)\\}\n\t\t)"
+keyEquivalent: "^~L"
+name: HTML Liquid
+patterns:
+- begin: "{% +#"
+  end: "%}"
+  name: comment.liquid
+- begin: "{% comment %}"
+  captures:
+    '0':
+      name: punctuation.definition.comment.html
+  end: "{% endcomment %}"
+  name: comment.block.html
+  patterns:
+  - match: "--"
+    name: invalid.illegal.bad-comments-or-CDATA.html
+  - include: "#embedded-code"
+- begin: "{%+(?!>)=?"
+  end: "%}"
+  name: source.liquid.tags.embedded.html
+  patterns:
+  - include: source.ruby.rails
+  - match: capture
+    name: keyword.control
+  - match: elseif
+    name: keyword.control
+  - match: endfor
+    name: keyword.control
+  - match: endif
+    name: keyword.control
+  - match: endcase
+    name: keyword.control
+  - match: endcapture
+    name: keyword.control
+  - match: endassign
+    name: keyword.control
+  - match: endunless
+    name: keyword.control
+  - match: assign
+    name: keyword.control
+- begin: "{{"
+  end: "}}"
+  name: source.liquid.output.embedded.html
+  patterns:
+  - include: source.ruby.rails
+- include: text.html.basic
+scopeName: text.html.liquid
+uuid: 675E0890-CA4B-404D-8000-15BE6FAE9998
